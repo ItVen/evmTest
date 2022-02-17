@@ -1,0 +1,16 @@
+node_modules/*
+build
+ 
+pem/*
+mock/*
+.idea/*
+.vscode
+
+.env
+.nyc_output
+*.log
+
+.editorconfig
+
+package-lock.json
+yarn.lock
