@@ -82,7 +82,7 @@ export async function quickAddLocalKeyTx(rawData, from) {
   }
 }
 
-export async function quickAddLocalKeyTx(rawData, from) {
+export async function addLocalKeyTx(rawData, from) {
   const inputs = addLocalKeyInput(rawData);
   try {
     console.log({ inputs, from });
