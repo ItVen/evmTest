@@ -8,6 +8,7 @@
     "run:rangers": "node ./src/evm/rangers.js",
     "run:register": "node ./src/unipass/tx/register.js",
     "run:quick_register": "node ./src/unipass/tx/quickRegister.js",
+    "run:add_local_key": "node ./src/unipass/tx/addLocalKey.js",
     "run:eth": "node ./src/eth/test.js",
     "run:rpc": "node ./src/eth/rpc.js",
     "register": "node registerTest.js",

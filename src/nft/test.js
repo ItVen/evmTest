@@ -11,7 +11,7 @@ const web3 = createAlchemyWeb3(
   `https://eth-mainnet.g.alchemy.com/v2/${apiKey}`
 );
 // The wallet address we want to query for NFTs:
-const ownerAddr = "0xC33881b8FD07d71098b440fA8A3797886D831061";
+const ownerAddr = "0x53afeb120edce5d778cab7de76d34f5fcd92c7d0";
 
 const EnsHost = `https://metadata.ens.domains/${net}`;
 async function parseEnsNFT(address, tokenId) {
@@ -31,8 +31,10 @@ async function parseEnsNFT(address, tokenId) {
 async function allNFTs() {
   const nfts = await web3.alchemy.getNfts({
     owner: ownerAddr,
+    withMetadata: true,
   });
 
+  console.time("start");
   // Print owner's wallet address:
   console.log("fetching NFTs for address:", ownerAddr);
   console.log("...");
@@ -40,29 +42,30 @@ async function allNFTs() {
   // Print total NFT count returned in the response:
   console.log("number of NFTs found:", nfts.totalCount);
   console.log("...");
-  console.log("nfts:", JSON.stringify(nfts));
+  console.timeEnd("start");
 
+  console.time("nft");
   // Print contract address and tokenId for each NFT:
-  for (const nft of nfts.ownedNfts) {
-    console.log("===");
-
+  const nftsList = [];
+  nfts.ownedNfts.forEach(async (nft) => {
     const tokenId = BigNumber.from(nft.id.tokenId).toString();
-    console.log(
-      "token ID: ",
-      tokenId,
-      "nft.id.tokenId=",
-      nft.id.tokenId,
-      "length",
-      tokenId.length
-    );
-    console.log("contractAddress ID: ", nft.contract.address);
-    let nftData = {};
-    if (tokenId > 2147483647) {
-      const ensNFTData = parseEnsNFT(nft.contract.address, nft.id.tokenId);
+
+    const nftData = {
+      title: "",
+      description: "",
+      image: "",
+      avatar: "",
+    };
+    if (nft.contract.address == "0x57f1887a8bf19b14fc0df6fd9b2acc9af147ea85") {
+      const ensNFTData = await parseEnsNFT(
+        nft.contract.address,
+        nft.id.tokenId
+      );
       nftData.title = ensNFTData.name;
       nftData.description = ensNFTData.description;
       nftData.image = ensNFTData.image_url;
       nftData.avatar = ensNFTData.background_image;
+      nftsList.push(nftData);
     } else {
       const response = await web3.alchemy.getNftMetadata({
         contractAddress: nft.contract.address,
@@ -71,14 +74,12 @@ async function allNFTs() {
       nftData.title = response.title;
       nftData.description = response.description;
       nftData.image = response.image;
+      nftsList.push(nftData);
     }
+    console.log("...", nftsList.length);
+  });
 
-    console.log({
-      nftData,
-      address: nft.contract.address,
-      tokenId: nft.id.tokenId,
-    });
-  }
+  console.timeEnd("nft");
 }
 
 allNFTs();

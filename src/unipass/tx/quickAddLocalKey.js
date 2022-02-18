@@ -56,10 +56,9 @@ async function getRegisterData(username) {
 
 async function getRegisterTxData(username) {
   const initData = await getRegisterData(username);
-  console.log(JSON.stringify(initData));
   const tx = await registerTx(initData.tempTxData, initData.k1.publicKey);
   return { tempTxData: initData.tempTxData, k1: initData.k1, tx };
 }
 
-const data = await getRegisterTxData("b3d9");
+const data = await getRegisterTxData("web3_register");
 console.log(data);

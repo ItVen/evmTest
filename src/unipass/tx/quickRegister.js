@@ -15,7 +15,7 @@ import { quickRegisterTx } from "../../evm/rangers.js";
 
 async function getQuickRegisterData(username) {
   const k1 = getFileData("./mock/ethKey.json", true);
-  const email = k1.publicKey + "@mail.unipass.me";
+  const email = "aven123@qq.com";
   const pubKey = k1.publicKey;
   const inner = {
     chainId: 0,
@@ -47,9 +47,10 @@ async function getQuickRegisterData(username) {
 
 async function getQuickRegisterTxData(username) {
   const initData = await getQuickRegisterData(username);
+  console.log(JSON.stringify(initData));
   const tx = await quickRegisterTx(initData.tempTxData, initData.k1.publicKey);
   return { tempTxData: initData.tempTxData, k1: initData.k1, tx };
 }
 
-const data = await getQuickRegisterTxData("abcdef");
+const data = await getQuickRegisterTxData("aven123");
 console.log(data);

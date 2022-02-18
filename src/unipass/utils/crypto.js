@@ -82,6 +82,16 @@ export async function getRSAData() {
   };
 }
 
+export async function getRSAFromPem(pem) {
+  const key = new NodeRSA(pem);
+  key.setOptions({ signingScheme: "pkcs1-sha256" });
+  const pubKey = await extractPubkey(key);
+  return {
+    pubKey,
+    key,
+  };
+}
+
 export async function extractPubkey(privateKey) {
   const data = await privateKey.exportKey("components-private");
   const e = data.e.toString(16).padStart(8, "0");
