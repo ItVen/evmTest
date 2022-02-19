@@ -5,9 +5,7 @@ import {
   RpcActionType,
 } from "up-aggregator-utils";
 import {
-  getHashData,
   k1PersonalSign,
-  emailHash,
   signMessage,
   getRSAData,
   getRSAFromPem,
@@ -17,23 +15,11 @@ import { addLocalKeyTx } from "../../evm/rangers.js";
 import * as dotenv from "dotenv";
 dotenv.config("./env");
 
-// const inputs = [
-//   registerEmail,
-//   originUsername,
-//   nonce,
-//   newkeyType,
-//   newKey,
-//   newKeySig,
-//   keyType,
-//   key,
-//   sig,
-// ];
-
 async function getAddLocalKeyData() {
   const account = getFileData("./mock/account.json", true);
   const rsaKey = getFileData("./mock/addRSAKey.json", true);
   const inner = {
-    chainId: 0,
+    chainId: process.env.CHAIN_ID,
     action: ActionType.ADD_LOCAL_KEY,
     username: account.tempTxData.username,
     registerEmail: account.tempTxData.email,
@@ -51,23 +37,22 @@ async function getAddLocalKeyData() {
     username: account.tempTxData.username,
     oriUsername: account.tempTxData.oriUsername,
     oriEmail: account.tempTxData.oriEmail,
-    key: pubKey.toLocaleLowerCase(),
+    nonce: "0x2",
+    keyType: KeyType.RSA,
+    key: rsaKey.publicKey,
+    newSign,
     keyType: KeyType.Secp256K1,
+    key: account.k1.publicKey,
     sig,
-    type: RpcActionType.REGISTER,
-    emailHeader,
   };
   return { tempTxData, k1 };
 }
 
-const rsaKey = await getRSAData();
-console.log(JSON.stringify(rsaKey));
-
-async function getAddLocalKeyTxData(username) {
-  const initData = await getAddLocalKeyData(username);
+async function getAddLocalKeyData() {
+  const initData = await getAddLocalKeyTxData();
   const tx = await addLocalKeyTx(initData.tempTxData, initData.k1.publicKey);
   return { tempTxData: initData.tempTxData, k1: initData.k1, tx };
 }
 
-// const data = await getAddLocalKeyTxData();
-// console.log(data);
+const data = await getAddLocalKeyData();
+console.log(data);

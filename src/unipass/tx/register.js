@@ -21,7 +21,7 @@ async function getRegisterData(username) {
   const email = k1.publicKey + "@mail.unipass.me";
   const pubKey = k1.publicKey;
   const inner = {
-    chainId: 0,
+    chainId: process.env.CHAIN_ID,
     action: ActionType.REGISTER,
     username: getHashData(username),
     registerEmail: emailHash(email),
@@ -36,7 +36,7 @@ async function getRegisterData(username) {
   const emailHeader = await getSignEmailWithDkim(
     subject,
     email,
-    process.env.TRANSFER_MAIL
+    process.env.BOT_MAIL
   );
   console.log(emailHeader);
 

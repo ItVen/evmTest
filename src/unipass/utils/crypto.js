@@ -85,9 +85,9 @@ export async function getRSAData() {
 export async function getRSAFromPem(pem) {
   const key = new NodeRSA(pem);
   key.setOptions({ signingScheme: "pkcs1-sha256" });
-  const pubKey = await extractPubkey(key);
+  const publicKey = await extractPubkey(key);
   return {
-    pubKey,
+    publicKey,
     key,
   };
 }

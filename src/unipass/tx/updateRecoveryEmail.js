@@ -36,7 +36,7 @@ async function getRegisterData(username) {
   const emailHeader = await getSignEmailWithDkim(
     subject,
     email,
-    process.env.TRANSFER_MAIL
+    process.env.BOT_MAIL
   );
   console.log(emailHeader);
 

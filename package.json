@@ -5,15 +5,13 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "run:rangers": "node ./src/evm/rangers.js",
-    "run:register": "node ./src/unipass/tx/register.js",
-    "run:quick_register": "node ./src/unipass/tx/quickRegister.js",
-    "run:add_local_key": "node ./src/unipass/tx/addLocalKey.js",
+    "rangers": "node ./src/evm/rangers.js",
+    "register": "node ./src/unipass/tx/register.js",
+    "quick_register": "node ./src/unipass/tx/quickRegister.js",
+    "add_local_key": "node ./src/unipass/tx/addLocalKey.js",
+    "k1": "node ./src/unipass/utils/k1.js",
+    "rsa": "node ./src/unipass/utils/rsa.js",
     "discord": "node ./src/discord",
-    "run:eth": "node ./src/eth/test.js",
-    "run:rpc": "node ./src/eth/rpc.js",
-    "register": "node registerTest.js",
-    "login": "node loginTest.js",
     "dkim": "git clone --depth=1 git@github.com:sking789/node-dkim.git && rm -rf node_modules/node-dkim && cp -rf node-dkim node_modules/node-dkim && cd node_modules/node-dkim && yarn&& rm -rf ../../node-dkim"
   },
   "dependencies": {

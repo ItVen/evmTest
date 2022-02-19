@@ -12,13 +12,15 @@ import {
 } from "../utils/crypto.js";
 import { getFileData } from "../utils/file.js";
 import { quickRegisterTx } from "../../evm/rangers.js";
+import * as dotenv from "dotenv";
+dotenv.config("./env");
 
 async function getQuickRegisterData(username) {
   const k1 = getFileData("./mock/ethKey.json", true);
   const email = "aven123@qq.com";
   const pubKey = k1.publicKey;
   const inner = {
-    chainId: 0,
+    chainId: process.env.CHAIN_ID,
     action: ActionType.REGISTER,
     username: getHashData(username),
     registerEmail: emailHash(email),
