@@ -2,10 +2,57 @@ import pkg from "web3-utils";
 const { encodePacked } = pkg;
 
 function getEncodData(key) {
-  if (!key) return "";
-  const data = encodePacked(key);
-  return data;
+  return key.v;
 }
+export function notionQuickRegisterInput(rawData) {
+  const registerEmail = getEncodData({
+    v: rawData.registerEmail,
+    t: "bytes32",
+  });
+
+  const originUsername = getEncodData({
+    v: rawData.originUsername,
+    t: "string",
+  });
+
+  const keyType = getEncodData({
+    v: rawData.newKeyType,
+    t: "uint8",
+  });
+
+  const key = getEncodData({
+    v: rawData.newKey,
+    t: "bytes",
+  });
+
+  const sig = getEncodData({
+    v: rawData.newKeySig,
+    t: "bytes",
+  });
+
+  const adminSig = getEncodData({
+    v: rawData.adminSig,
+    t: "bytes",
+  });
+
+  const source = getEncodData({
+    v: rawData.source,
+    t: "string",
+  });
+
+  const inputs = [
+    registerEmail,
+    originUsername,
+    keyType,
+    key,
+    sig,
+    adminSig,
+    source,
+  ];
+
+  return inputs;
+}
+
 export function quickRegisterInput(rawData) {
   const registerEmail = getEncodData({
     v: rawData.email,
@@ -67,7 +114,7 @@ export function registerInput(rawData) {
   });
 
   const emailHeader = getEncodData({
-    v: Buffer.from(rawData.emailHeader, "utf-8").toString("hex"),
+    v: "0x" + Buffer.from(rawData.emailHeader.trim(), "utf-8").toString("hex"),
     t: "bytes",
   });
 
@@ -165,24 +212,24 @@ export function addLocalKeyInput(rawData) {
     v: rawData.nonce,
     t: "uint256",
   });
-  const newkeyType = getEncodData({
-    v: rawData.newkeyType,
+  const newKeyType = getEncodData({
+    v: rawData.newKeyType,
     t: "uint256",
   });
   const newKey = getEncodData({
     v: rawData.newKey,
     t: "bytes",
   });
-  const newKeySig = getEncodData({
-    v: rawData.newKeySig,
+  const newKeySign = getEncodData({
+    v: rawData.newKeySign,
     t: "bytes",
   });
   const keyType = getEncodData({
-    v: rawData.newKeyType,
+    v: rawData.keyType,
     t: "uint256",
   });
   const key = getEncodData({
-    v: rawData.newKey,
+    v: rawData.key,
     t: "bytes",
   });
 
@@ -195,9 +242,9 @@ export function addLocalKeyInput(rawData) {
     registerEmail,
     originUsername,
     nonce,
-    newkeyType,
+    newKeyType,
     newKey,
-    newKeySig,
+    newKeySign,
     keyType,
     key,
     sig,

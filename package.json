@@ -7,6 +7,7 @@
   "scripts": {
     "rangers": "node ./src/evm/rangers.js",
     "register": "node ./src/unipass/tx/register.js",
+    "notionQuickeRegister": "node ./src/unipass/tx/notionQuickeRegister.js",
     "quick_register": "node ./src/unipass/tx/quickRegister.js",
     "add_local_key": "node ./src/unipass/tx/addLocalKey.js",
     "k1": "node ./src/unipass/utils/k1.js",

@@ -11,6 +11,7 @@ import {
   updateQuickLoginInput,
   updateRecoveryEmailInput,
   setAdminInput,
+  notionQuickRegisterInput,
 } from "./input.js";
 import { getFileData } from "../unipass/utils/file.js";
 
@@ -27,6 +28,35 @@ const contract = new web3.eth.Contract(
   abi,
   "0xfb0ba1eb50831297db0c49e4fcc743830546467d"
 );
+
+export async function notionQuickRegisterTx(rawData, from) {
+  const inputs = notionQuickRegisterInput(rawData);
+  console.log(inputs);
+  try {
+    console.log({ inputs, from });
+    contract.methods
+      .quickRegister(...inputs)
+      .send({ from: myAddress.publicKey })
+      .on("transactionHash", function (hash) {
+        console.log("transactionHash");
+        console.log({ hash });
+      })
+      .on("receipt", function (receipt) {
+        console.log("receipt");
+        console.log({ receipt });
+      })
+      .on("confirmation", function (confirmationNumber, receipt) {
+        console.log("confirmation");
+        console.log({ confirmationNumber, receipt });
+      })
+      .on("error", function (error, receipt) {
+        console.log("error");
+        console.log({ error, receipt });
+      });
+  } catch (err) {
+    console.log({ err });
+  }
+}
 
 export async function quickRegisterTx(rawData, from) {
   const inputs = quickRegisterInput(rawData);

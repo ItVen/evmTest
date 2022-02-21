@@ -117,6 +117,16 @@ export function signMessage(masterKey, messageHex) {
   return sig;
 }
 
+export async function composePubkey(_e, n) {
+  const nA = Buffer.from(n.replace("0x", ""), "hex");
+  const e = _e.toString(16).padStart(8, "0");
+  const eVec = Buffer.from(e, "hex");
+
+  const pubKey = "0x" + Buffer.concat([eVec, nA]).toString("hex");
+  // const pubKey = "0x" + Buffer.concat([nA]).toString("hex");
+  return pubKey;
+}
+
 export async function getAdminSin(
   username,
   nonce,
