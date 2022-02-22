@@ -32,10 +32,8 @@ async function getTxData() {
     pubKey: rsaKey.publicKey,
     keyType: KeyType.RSA,
   };
-  console.log(inner);
   const data = new SignMessage(inner);
   const messageHash = await data.messageHash();
-  console.log(messageHash);
   const { key, publicKey } = await getRSAFromPem(rsaKey.privatePem);
   const newKeySign = signMessage(key, messageHash);
   const subject = getSubjectHashData(newKeySign);
@@ -62,7 +60,6 @@ async function getTxData() {
     type: RpcActionType.QUICK_ADD_LOCAL_KEY,
     emailHeader: email,
   };
-  console.log(tempTxData);
   const adminSignature = await getQuickAddKeyAdminSin(tempTxData);
   tempTxData.adminSignature = adminSignature;
   return { tempTxData, k1: account.k1 };
@@ -70,7 +67,6 @@ async function getTxData() {
 
 async function getQuickAddLocalKeyTxData() {
   const initData = await getTxData();
-  console.log(initData);
   const tx = await quickAddLocalKeyTx(
     initData.tempTxData,
     initData.k1.publicKey

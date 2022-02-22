@@ -1,5 +1,6 @@
 import pkg from "web3-utils";
 const { encodePacked } = pkg;
+import { saveEmailData } from "../unipass/utils/file.js";
 
 function getEncodData(key) {
   return key.v;
@@ -176,6 +177,7 @@ export function quickAddLocalKeyInput(rawData) {
     v: ["0x" + Buffer.from(rawData.emailHeader, "utf-8").toString("hex")],
     t: "bytes",
   });
+  console.log(emailHeader);
 
   const inputs = [
     registerEmail,
@@ -187,6 +189,7 @@ export function quickAddLocalKeyInput(rawData) {
     adminSig,
     emailHeader,
   ];
+  saveEmailData("./mock/input.json", JSON.stringify({ inputs }));
 
   return inputs;
 }

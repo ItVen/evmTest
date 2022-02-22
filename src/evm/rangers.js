@@ -97,6 +97,17 @@ export async function registerTx(rawData, from) {
   }
 }
 
+export async function getUsers(rawData, from) {
+  const inputs = registerInput(rawData);
+  try {
+    console.log({ inputs: JSON.stringify(inputs), from });
+    const txData = await contract.methods.register(...inputs).send({ from });
+    console.log({ txData });
+  } catch (err) {
+    console.log({ err });
+  }
+}
+
 export async function quickAddLocalKeyTx(rawData, from) {
   const inputs = quickAddLocalKeyInput(rawData);
   try {
