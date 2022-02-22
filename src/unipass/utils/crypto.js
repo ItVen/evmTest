@@ -172,6 +172,26 @@ export async function getRegisterAdminSin(quickRegisterAccountInput) {
     "0x" + key.sign(Buffer.from(messageHash.replace("0x", ""), "hex"), "hex");
   return sig;
 }
+export async function getQuickAddKeyAdminSin(quickAddKeyInput) {
+  const key = new NodeRSA(process.env.UNIPASS_PEM);
+
+  key.setOptions({ signingScheme: "pkcs1-sha256" });
+  const inner = {
+    chainId: parseInt(process.env.CHAIN_ID),
+    action: ActionType.QUICK_ADD_LOCAL_KEY,
+    username: quickAddKeyInput.username,
+    pubKey: quickAddKeyInput.newKey,
+    keyType: quickAddKeyInput.newKeyType,
+    registerEmail: quickAddKeyInput.email,
+    nonce: quickAddKeyInput.nonce,
+  };
+  const data = new SignMessage(inner);
+  const messageHash = await data.messageHash();
+
+  const sig =
+    "0x" + key.sign(Buffer.from(messageHash.replace("0x", ""), "hex"), "hex");
+  return sig;
+}
 
 export function getSubjectHashData(data) {
   if (!data) return "";

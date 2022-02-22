@@ -173,15 +173,15 @@ export function quickAddLocalKeyInput(rawData) {
     t: "bytes",
   });
   const sig = getEncodData({
-    v: rawData.sig,
+    v: rawData.newKeySign,
     t: "bytes",
   });
   const adminSig = getEncodData({
-    v: rawData.adminSig,
+    v: rawData.adminSignature,
     t: "bytes",
   });
   const emailHeader = getEncodData({
-    v: Buffer.from(rawData.emailHeader, "utf-8").toString("hex"),
+    v: "0x" + Buffer.from(rawData.emailHeader, "utf-8").toString("hex"),
     t: "bytes",
   });
 
@@ -289,7 +289,7 @@ export function startRecoveryInput(rawData) {
   });
 
   const emailHeaders = getEncodData({
-    v: Buffer.from(rawData.emailHeader, "utf-8").toString("hex"),
+    v: "0x" + Buffer.from(rawData.emailHeader, "utf-8").toString("hex"),
     t: "bytes[]",
   });
 

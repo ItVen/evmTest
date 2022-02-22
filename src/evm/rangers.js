@@ -90,9 +90,7 @@ export async function registerTx(rawData, from) {
   const inputs = registerInput(rawData);
   try {
     console.log({ inputs, from });
-    const txData = await contract.methods
-      .register(...inputs)
-      .send({ from: myAddress.publicKey });
+    const txData = await contract.methods.register(...inputs).send({ from });
     console.log({ txData });
   } catch (err) {
     console.log({ err });
@@ -105,7 +103,7 @@ export async function quickAddLocalKeyTx(rawData, from) {
     console.log({ inputs, from });
     const txData = await contract.methods
       .quickAddLocalKey(...inputs)
-      .send({ from: myAddress.publicKey });
+      .send({ from });
     console.log({ txData });
   } catch (err) {
     console.log({ err });
