@@ -17,7 +17,7 @@ dotenv.config("./env");
 
 async function getQuickRegisterData(email) {
   const k1 = getFileData("./mock/ethKey.json", true);
-  const username = email.splice("@")[0];
+  const username = email.split("@")[0];
   const pubKey = k1.publicKey;
   const inner = {
     chainId: process.env.CHAIN_ID,
