@@ -74,33 +74,34 @@ export function k1PersonalSign(hash, privateKey) {
 export async function getRSAData() {
   const key = new NodeRSA({ b: 2048 });
   key.setOptions({ signingScheme: "pkcs1-sha256" });
-  const pubKey = await extractPubkey(key);
+  const publicKey = await extractPubkey(key);
   const privatePem = key.exportKey("pkcs8-private");
   return {
-    pubKey,
+    publicKey,
     privatePem,
   };
 }
 
-export async function getRSAFromPem(pem) {
+export async function getRSAFromPem(pem, all) {
   const key = new NodeRSA(pem);
   key.setOptions({ signingScheme: "pkcs1-sha256" });
-  const publicKey = await extractPubkey(key);
+  const publicKey = await extractPubkey(key, all);
   return {
     publicKey,
     key,
   };
 }
 
-export async function extractPubkey(privateKey) {
+export async function extractPubkey(privateKey, all) {
   const data = await privateKey.exportKey("components-private");
   const e = data.e.toString(16).padStart(8, "0");
   const n = data.n.slice(1);
   const eVec = Buffer.from(e, "hex");
   const nVec = n;
-  const pubKey = "0x" + Buffer.concat([nVec]).toString("hex");
+  const pubKey = all
+    ? "0x" + Buffer.concat([eVec, nVec]).toString("hex")
+    : "0x" + Buffer.concat([nVec]).toString("hex");
 
-  // const pubKey = "0x" + Buffer.concat([eVec, nVec]).toString("hex");
   return pubKey;
 }
 
@@ -175,9 +176,8 @@ export async function getRegisterAdminSin(quickRegisterAccountInput) {
   return sig;
 }
 export async function getQuickAddKeyAdminSin(quickAddKeyInput) {
-  const key = new NodeRSA(process.env.UNIPASS_PEM);
+  const { key, publicKey } = await getRSAFromPem(process.env.UNIPASS_PEM, true);
 
-  key.setOptions({ signingScheme: "pkcs1-sha256" });
   const inner = {
     chainId: parseInt(process.env.CHAIN_ID),
     action: ActionType.QUICK_ADD_LOCAL_KEY,
@@ -192,6 +192,14 @@ export async function getQuickAddKeyAdminSin(quickAddKeyInput) {
 
   const sig =
     "0x" + key.sign(Buffer.from(messageHash.replace("0x", ""), "hex"), "hex");
+
+  const verify = verifyRSASign(messageHash, sig, publicKey);
+  console.log({
+    verify,
+    src: messageHash,
+    signature: sig,
+    pubkey: publicKey,
+  });
   return sig;
 }
 
@@ -220,4 +228,39 @@ export async function getSignEmailWithDkim(subject, from, to) {
   });
   const email = await signEmailWithDkim(mail, dkim);
   return email.toString();
+}
+
+export function processV2PubkeyEN(pubkey) {
+  const pubkeyBuffer = Buffer.from(pubkey.replace("0x", ""), "hex");
+  const e = pubkeyBuffer.slice(4, 8).readUInt32LE();
+  const n = pubkeyBuffer.slice(8);
+  console.log(e, n.toString("hex"));
+  return { e, n };
+}
+
+export function verifyRSASign(src, signature, pubkey) {
+  const key = new NodeRSA();
+  try {
+    const { e, n } = processPubkeyEN(pubkey);
+    key.importKey(
+      {
+        e,
+        n,
+      },
+      "components-public"
+    );
+
+    key.setOptions({ signingScheme: "pkcs1-sha256" });
+
+    const data = Buffer.from(src.replace("0x", ""), "hex");
+    const ret = key.verify(
+      data,
+      Buffer.from(signature.replace("0x", ""), "hex")
+    );
+    return ret;
+  } catch (err) {
+    this.logger.error(`[verifyData] VerifySignService err ${err}`, err?.stack);
+
+    return false;
+  }
 }
