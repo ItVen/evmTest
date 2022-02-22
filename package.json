@@ -12,6 +12,7 @@
     "quick_add_local_key": "node ./src/unipass/tx/quickAddLocalKey.js",
     "del_key": "node ./src/unipass/tx/delLocalKeyTx.js",
     "start_recovery": "node ./src/unipass/tx/startRecovery.js",
+    "cancel_recovery": "node ./src/unipass/tx/cancelRecovery.js",
     "update_quick_login": "node ./src/unipass/tx/updateQuickLogin.js",
     "update_recovery_email": "node ./src/unipass/tx/updateRecoveryEmail.js",
     "notion_r": "node ./src/unipass/tx/notionR.js",
