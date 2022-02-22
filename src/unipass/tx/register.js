@@ -61,6 +61,7 @@ async function getRegisterTxData(username) {
   console.log({ username });
   const initData = await getRegisterData(username);
   console.log(JSON.stringify(initData));
+  saveEmailData(`./mock/${username}.json`, JSON.stringify(initData));
   const tx = await registerTx(initData.tempTxData, initData.k1.publicKey);
   return { tempTxData: initData.tempTxData, k1: initData.k1, tx };
 }

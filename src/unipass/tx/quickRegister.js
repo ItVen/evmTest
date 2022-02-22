@@ -15,9 +15,9 @@ import { quickRegisterTx } from "../../evm/rangers.js";
 import * as dotenv from "dotenv";
 dotenv.config("./env");
 
-async function getQuickRegisterData(username) {
+async function getQuickRegisterData(email) {
   const k1 = getFileData("./mock/ethKey.json", true);
-  const email = username;
+  const username = email.splice("@")[0];
   const pubKey = k1.publicKey;
   const inner = {
     chainId: process.env.CHAIN_ID,
@@ -52,6 +52,7 @@ async function getQuickRegisterTxData(username) {
   console.log({ username, argsUsername });
   const initData = await getQuickRegisterData(username);
   console.log(JSON.stringify(initData));
+  saveEmailData(`./mock/${username}.json`, JSON.stringify(initData));
   const tx = await quickRegisterTx(initData.tempTxData, initData.k1.publicKey);
   return { tempTxData: initData.tempTxData, k1: initData.k1, tx };
 }
