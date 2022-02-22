@@ -35,7 +35,7 @@ async function getTxData() {
   };
   const data = new SignMessage(inner);
   const messageHash = await data.messageHash();
-
+  const { key, publicKey } = await getRSAFromPem(rsaKey.privatePem);
   const newKeySign = signMessage(key, messageHash);
 
   const verify = verifyRSASign(messageHash, newKeySign, rsaKey.publicKey);
