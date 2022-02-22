@@ -13,6 +13,8 @@ dotenv.config("./env");
 const argsUsername = process.argv.splice(2);
 const fileName = argsUsername[0];
 const nonce = argsUsername[1];
+let resetKeys = argsUsername[2];
+resetKeys = resetKeys == "true" ? true : false;
 
 async function getTxData() {
   const account = getFileData(`./mock/${fileName}.json`, true);
@@ -25,6 +27,7 @@ async function getTxData() {
     nonce,
     pubKey: rsaKey.publicKey,
     keyType: KeyType.RSA,
+    resetKeys,
   };
 
   const data = new SignMessage(inner);
@@ -50,7 +53,7 @@ async function getTxData() {
     newKeyType: KeyType.RSA,
     newKeySign,
     nonce,
-    resetKeys: false,
+    resetKeys,
     emailHeader: email,
   };
 
