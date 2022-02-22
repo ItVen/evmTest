@@ -16,7 +16,7 @@ import * as dotenv from "dotenv";
 dotenv.config("./env");
 
 async function getAddLocalKeyTxData() {
-  const nonce = "0x2";
+  const nonce = "0x4";
   const account = getFileData("./mock/account.json", true);
   const rsaKey = getFileData("./mock/addRSAKey.json", true);
 
