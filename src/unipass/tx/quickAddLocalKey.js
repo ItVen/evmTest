@@ -45,7 +45,8 @@ async function getTxData() {
   );
   //save file
   saveEmailData("./mock/quick_add_key.eml", emailHeader);
-  console.log(emailHeader);
+  const email = getFileData("./email/quick_add_key.eml");
+  console.log(email);
 
   const tempTxData = {
     email: account.tempTxData.email,
@@ -57,7 +58,7 @@ async function getTxData() {
     newKeySign,
     nonce,
     type: RpcActionType.QUICK_ADD_LOCAL_KEY,
-    emailHeader,
+    emailHeader: email,
   };
   console.log(tempTxData);
   const adminSignature = await getQuickAddKeyAdminSin(tempTxData);
