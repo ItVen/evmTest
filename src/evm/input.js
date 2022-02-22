@@ -339,10 +339,7 @@ export function cancelRecoveryInput(rawData) {
 }
 
 export function completeRecoveryInput(rawData) {
-  const registerEmail = getEncodData({
-    v: rawData.email,
-    t: "bytes32",
-  });
+  const registerEmail = rawData.email;
   const inputs = [registerEmail];
 
   return inputs;

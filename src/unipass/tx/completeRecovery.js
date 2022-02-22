@@ -1,64 +1,32 @@
-import {
-  SignMessage,
-  ActionType,
-  KeyType,
-  RpcActionType,
-} from "up-aggregator-utils";
-import {
-  getHashData,
-  k1PersonalSign,
-  getSignEmailWithDkim,
-  emailHash,
-  getSubjectHashData,
-} from "../utils/crypto.js";
 import { getFileData } from "../utils/file.js";
-import { registerTx } from "../../evm/rangers.js";
+import { completeRecoveryTx } from "../../evm/rangers.js";
 import * as dotenv from "dotenv";
 dotenv.config("./env");
 
-async function getRegisterData(username) {
-  const k1 = getFileData("./mock/ethKey.json", true);
-  const email = k1.publicKey + "@mail.unipass.me";
-  const pubKey = k1.publicKey;
-  const inner = {
-    chainId: 0,
-    action: ActionType.REGISTER,
-    username: getHashData(username),
-    registerEmail: emailHash(email),
-    pubKey: pubKey,
-    keyType: KeyType.Secp256K1,
-  };
-  const data = new SignMessage(inner);
-  const messageHash = await data.messageHash();
-  const sig = k1PersonalSign(messageHash, k1.privateKey);
+const argsUsername = process.argv.splice(2);
+const fileName = argsUsername[0];
+const nonce = argsUsername[1];
 
-  const subject = getSubjectHashData(sig);
-  const emailHeader = await getSignEmailWithDkim(
-    subject,
-    email,
-    process.env.BOT_MAIL
-  );
-  console.log(emailHeader);
+async function getData() {
+  const account = getFileData(`./mock/${fileName}.json`, true);
 
   const tempTxData = {
-    email: emailHash(email),
-    username: getHashData(username),
-    oriUsername: username,
-    oriEmail: email,
-    key: pubKey.toLocaleLowerCase(),
-    keyType: KeyType.Secp256K1,
-    sig,
-    type: RpcActionType.REGISTER,
-    emailHeader,
+    email: account.tempTxData.email,
+    username: account.tempTxData.username,
+    oriUsername: account.tempTxData.oriUsername,
+    oriEmail: account.tempTxData.oriEmail,
+    nonce,
   };
-  return { tempTxData, k1 };
+  return { tempTxData, k1: account.k1 };
 }
 
-async function getRegisterTxData(username) {
-  const initData = await getRegisterData(username);
-  const tx = await registerTx(initData.tempTxData, initData.k1.publicKey);
+async function completeRecovery(username) {
+  const initData = await getData(username);
+  const tx = await completeRecoveryTx(
+    initData.tempTxData,
+    initData.k1.publicKey
+  );
   return { tempTxData: initData.tempTxData, k1: initData.k1, tx };
 }
 
-const data = await getRegisterTxData("web3_register");
-console.log(data);
+const data = await completeRecovery();
