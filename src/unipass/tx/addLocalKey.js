@@ -16,11 +16,12 @@ import * as dotenv from "dotenv";
 dotenv.config("./env");
 
 const argsUsername = process.argv.splice(2);
-const nonce = argsUsername[0];
+const fileName = argsUsername[0];
+const nonce = argsUsername[1];
 
 async function getAddLocalKeyTxData() {
-  const account = getFileData("./mock/account.json", true);
-  const rsaKey = getFileData("./mock/addRSAKey.json", true);
+  const account = getFileData(`./mock/${fileName}.json`, true);
+  const rsaKey = getRSAData();
 
   const inner = {
     chainId: process.env.CHAIN_ID,
