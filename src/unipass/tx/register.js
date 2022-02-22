@@ -55,7 +55,10 @@ async function getRegisterData(username) {
   return { tempTxData, k1 };
 }
 
+const argsUsername = process.argv.splice(2);
 async function getRegisterTxData(username) {
+  if (argsUsername.length > 0) username = argsUsername[0];
+  console.log({ username });
   const initData = await getRegisterData(username);
   console.log(JSON.stringify(initData));
   const tx = await registerTx(initData.tempTxData, initData.k1.publicKey);

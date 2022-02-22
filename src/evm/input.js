@@ -54,15 +54,9 @@ export function notionQuickRegisterInput(rawData) {
 }
 
 export function quickRegisterInput(rawData) {
-  const registerEmail = getEncodData({
-    v: rawData.email,
-    t: "bytes32",
-  });
+  const registerEmail = rawData.email;
 
-  const originUsername = getEncodData({
-    v: rawData.oriUsername,
-    t: "string",
-  });
+  const originUsername = rawData.oriUsername;
 
   const keyType = getEncodData({
     v: rawData.keyType,

@@ -17,7 +17,7 @@ dotenv.config("./env");
 
 async function getQuickRegisterData(username) {
   const k1 = getFileData("./mock/ethKey.json", true);
-  const email = `${username}@@mail.unipass.me`;
+  const email = `${username}@qq.com`;
   const pubKey = k1.publicKey;
   const inner = {
     chainId: process.env.CHAIN_ID,
@@ -46,8 +46,10 @@ async function getQuickRegisterData(username) {
 
   return { tempTxData, k1 };
 }
-
+const argsUsername = process.argv.splice(2);
 async function getQuickRegisterTxData(username) {
+  if (argsUsername.length > 0) username = argsUsername[0];
+  console.log({ username, argsUsername });
   const initData = await getQuickRegisterData(username);
   console.log(JSON.stringify(initData));
   const tx = await quickRegisterTx(initData.tempTxData, initData.k1.publicKey);
