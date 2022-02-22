@@ -15,8 +15,10 @@ import { addLocalKeyTx } from "../../evm/rangers.js";
 import * as dotenv from "dotenv";
 dotenv.config("./env");
 
+const argsUsername = process.argv.splice(2);
+const nonce = argsUsername[0];
+
 async function getAddLocalKeyTxData() {
-  const nonce = "0x4";
   const account = getFileData("./mock/account.json", true);
   const rsaKey = getFileData("./mock/addRSAKey.json", true);
 

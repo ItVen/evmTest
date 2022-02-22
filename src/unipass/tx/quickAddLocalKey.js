@@ -17,8 +17,10 @@ import { quickAddLocalKeyTx } from "../../evm/rangers.js";
 import * as dotenv from "dotenv";
 dotenv.config("./env");
 
+const argsUsername = process.argv.splice(2);
+const nonce = argsUsername[0];
+
 async function getTxData() {
-  const nonce = "0x2";
   const account = getFileData("./mock/account_k1.json", true);
   const rsaKey = getFileData("./mock/addRSAKey.json", true);
   const inner = {
