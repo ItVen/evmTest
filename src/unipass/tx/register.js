@@ -10,6 +10,7 @@ import {
   getSignEmailWithDkim,
   emailHash,
   getSubjectHashData,
+  saveEmailData,
 } from "../utils/crypto.js";
 import { getFileData, saveEmailData } from "../utils/file.js";
 import { registerTx } from "../../evm/rangers.js";
