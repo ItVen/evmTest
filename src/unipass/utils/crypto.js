@@ -71,10 +71,10 @@ export function k1PersonalSign(hash, privateKey) {
   return toRpcSig(sig.v, sig.r, sig.s);
 }
 
-export async function getRSAData() {
+export async function getRSAData(all) {
   const key = new NodeRSA({ b: 2048 });
   key.setOptions({ signingScheme: "pkcs1-sha256" });
-  const publicKey = await extractPubkey(key);
+  const publicKey = await extractPubkey(key, all);
   const privatePem = key.exportKey("pkcs8-private");
   return {
     publicKey,

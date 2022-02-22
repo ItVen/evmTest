@@ -21,7 +21,7 @@ const nonce = argsUsername[1];
 
 async function getAddLocalKeyTxData() {
   const account = getFileData(`./mock/${fileName}.json`, true);
-  const rsaKey = await getRSAData();
+  const rsaKey = await getRSAData(true);
 
   const inner = {
     chainId: process.env.CHAIN_ID,
