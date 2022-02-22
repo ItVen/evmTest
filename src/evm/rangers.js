@@ -221,12 +221,12 @@ export async function setAdminTx(rawData, from) {
   }
 }
 
-export async function getUsersTx(username, from) {
+export async function getUsersTx(username) {
   try {
-    console.log({ username, from: myAddress.publicKey });
+    console.log({ username });
     const txData = await contract.methods
       .users(username)
-      .send({ from: myAddress.publicKey });
+      .call({ from: myAddress.publicKey });
     console.log({ txData });
     return txData;
   } catch (err) {
