@@ -27,7 +27,7 @@ async function getTxData() {
     nonce,
     pubKey: rsaKey.publicKey,
     keyType: KeyType.RSA,
-    resetKeys,
+    // resetKeys,
   };
 
   const data = new SignMessage(inner);
