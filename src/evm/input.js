@@ -275,21 +275,21 @@ export function startRecoveryInput(rawData) {
   });
 
   const keyType = getEncodData({
-    v: rawData.keyType,
+    v: rawData.newKeyType,
     t: "uint256",
   });
 
   const key = getEncodData({
-    v: rawData.key,
+    v: rawData.newKey,
     t: "bytes",
   });
   const sig = getEncodData({
-    v: rawData.sig,
+    v: rawData.newKeySign,
     t: "bytes",
   });
 
   const emailHeaders = getEncodData({
-    v: "0x" + Buffer.from(rawData.emailHeader, "utf-8").toString("hex"),
+    v: ["0x" + Buffer.from(rawData.emailHeader, "utf-8").toString("hex")],
     t: "bytes[]",
   });
 
@@ -298,8 +298,8 @@ export function startRecoveryInput(rawData) {
     username,
     nonce,
     resetKeys,
-    key,
     keyType,
+    key,
     sig,
     emailHeaders,
   ];

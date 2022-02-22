@@ -12,6 +12,7 @@
     "add_local_key": "node ./src/unipass/tx/addLocalKey.js",
     "quick_add_local_key": "node ./src/unipass/tx/quickAddLocalKey.js",
     "del_key": "node ./src/unipass/tx/delLocalKeyTx.js",
+    "start_recovery": "node ./src/unipass/tx/startRecovery.js",
     "k1": "node ./src/unipass/utils/k1.js",
     "rsa": "node ./src/unipass/utils/rsa.js",
     "discord": "node ./src/discord",
