@@ -75,10 +75,10 @@ async function getQuickAddLocalKeyTxData() {
   return { tempTxData: initData.tempTxData, k1: initData.k1, tx };
 }
 
-// const data = await getQuickAddLocalKeyTxData();
-// console.log(data);
+const data = await getQuickAddLocalKeyTxData();
+console.log(data);
 // const { key, publicKey } = await getRSAFromPem(process.env.UNIPASS_PEM);
 // console.log({ key, publicKey });
-const oriEmail = "0x35036a691130943550bfcF528DE08432850603ce@mail.unipass.me";
-const email = emailHash(oriEmail);
-console.log({ email, oriEmail });
+// const oriEmail = "0x35036a691130943550bfcF528DE08432850603ce@mail.unipass.me";
+// const email = emailHash(oriEmail);
+// console.log({ email, oriEmail });
