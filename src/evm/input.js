@@ -181,7 +181,7 @@ export function quickAddLocalKeyInput(rawData) {
     t: "bytes",
   });
   const emailHeader = getEncodData({
-    v: "0x" + Buffer.from(rawData.emailHeader, "utf-8").toString("hex"),
+    v: ["0x" + Buffer.from(rawData.emailHeader, "utf-8").toString("hex")],
     t: "bytes",
   });
 
