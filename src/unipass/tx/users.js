@@ -1,5 +1,5 @@
 import { getUsersTx } from "../../evm/rangers.js";
-import { getHashData } from "../utils/crypto.js";
+import { emailHash } from "../utils/crypto.js";
 import * as dotenv from "dotenv";
 dotenv.config("./env");
 
@@ -7,7 +7,7 @@ const argsUsername = process.argv.splice(2);
 
 async function getRegisterTxData(username) {
   if (argsUsername.length > 0) username = argsUsername[0];
-  const tx = await getUsersTx(getHashData(username));
+  const tx = await getUsersTx(emailHash(username));
   return tx;
 }
 
