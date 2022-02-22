@@ -114,9 +114,7 @@ export async function addLocalKeyTx(rawData, from) {
   const inputs = addLocalKeyInput(rawData);
   try {
     console.log({ inputs, from });
-    const txData = await contract.methods
-      .addLocalKey(...inputs)
-      .send({ from: myAddress.publicKey });
+    const txData = await contract.methods.addLocalKey(...inputs).send({ from });
     console.log({ txData });
   } catch (err) {
     console.log({ err });
@@ -127,9 +125,7 @@ export async function delLocalKeyTx(rawData, from) {
   const inputs = delLocalKeyInput(rawData);
   try {
     console.log({ inputs, from });
-    const txData = await contract.methods
-      .delLocalKey(...inputs)
-      .send({ from: myAddress.publicKey });
+    const txData = await contract.methods.delLocalKey(...inputs).send({ from });
     console.log({ txData });
   } catch (err) {
     console.log({ err });

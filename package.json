@@ -11,6 +11,7 @@
     "quick_register": "node ./src/unipass/tx/quickRegister.js",
     "add_local_key": "node ./src/unipass/tx/addLocalKey.js",
     "quick_add_local_key": "node ./src/unipass/tx/quickAddLocalKey.js",
+    "del_key": "node ./src/unipass/tx/delLocalKeyTx.js",
     "k1": "node ./src/unipass/utils/k1.js",
     "rsa": "node ./src/unipass/utils/rsa.js",
     "discord": "node ./src/discord",
