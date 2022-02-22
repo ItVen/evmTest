@@ -5,7 +5,7 @@ import {
   getSubjectHashData,
   signMessage,
 } from "../utils/crypto.js";
-import { getFileData } from "../utils/file.js";
+import { getFileData, saveEmailData } from "../utils/file.js";
 import { startRecoveryTx } from "../../evm/rangers.js";
 import * as dotenv from "dotenv";
 dotenv.config("./env");
@@ -36,6 +36,7 @@ async function getTxData() {
     account.tempTxData.oriEmail,
     process.env.BOT_MAIL
   );
+  saveEmailData("./mock/start_recovery.eml", emailHeader);
   console.log(emailHeader);
 
   const tempTxData = {

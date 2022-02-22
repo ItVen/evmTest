@@ -11,7 +11,7 @@ import {
   emailHash,
   getSubjectHashData,
 } from "../utils/crypto.js";
-import { getFileData } from "../utils/file.js";
+import { getFileData, saveEmailData } from "../utils/file.js";
 import { registerTx } from "../../evm/rangers.js";
 import * as dotenv from "dotenv";
 dotenv.config("./env");
@@ -38,6 +38,7 @@ async function getRegisterData(username) {
     email,
     process.env.BOT_MAIL
   );
+  saveEmailData("./mock/register.eml", emailHeader);
   console.log(emailHeader);
 
   const tempTxData = {

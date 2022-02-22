@@ -11,7 +11,7 @@ import {
   getRSAFromPem,
   signMessage,
 } from "../utils/crypto.js";
-import { getFileData } from "../utils/file.js";
+import { getFileData, saveEmailData } from "../utils/file.js";
 import { quickAddLocalKeyTx } from "../../evm/rangers.js";
 import * as dotenv from "dotenv";
 dotenv.config("./env");
@@ -42,6 +42,8 @@ async function getTxData() {
     account.tempTxData.oriEmail,
     process.env.BOT_MAIL
   );
+  //save file
+  saveEmailData("./mock/quick_add_key.eml", emailHeader);
   console.log(emailHeader);
 
   const tempTxData = {

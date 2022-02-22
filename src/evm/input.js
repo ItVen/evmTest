@@ -113,10 +113,8 @@ export function registerInput(rawData) {
     t: "string",
   });
 
-  const emailHeader = getEncodData({
-    v: "0x" + Buffer.from(rawData.emailHeader.trim(), "utf-8").toString("hex"),
-    t: "bytes",
-  });
+  const emailHeader =
+    "0x" + Buffer.from(rawData.emailHeader.trim(), "utf-8").toString("hex");
 
   const keyType = getEncodData({
     v: rawData.keyType,
@@ -181,7 +179,7 @@ export function quickAddLocalKeyInput(rawData) {
     t: "bytes",
   });
   const emailHeader = getEncodData({
-    v: ["0x" + Buffer.from(rawData.emailHeader, "utf-8").toString("hex")],
+    v: [Buffer.from(rawData.emailHeader, "utf-8").toString("hex")],
     t: "bytes",
   });
 
@@ -289,7 +287,7 @@ export function startRecoveryInput(rawData) {
   });
 
   const emailHeaders = getEncodData({
-    v: ["0x" + Buffer.from(rawData.emailHeader, "utf-8").toString("hex")],
+    v: [Buffer.from(rawData.emailHeader, "utf-8").toString("hex")],
     t: "bytes[]",
   });
 

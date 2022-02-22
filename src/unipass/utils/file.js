@@ -7,3 +7,7 @@ export function getFileData(filePath, json) {
   if (json) return JSON.parse(data);
   return data;
 }
+
+export function saveEmailData(filePath, data) {
+  fs.writeFileSync(path.join(__dirname, filePath), data);
+}
