@@ -27,7 +27,7 @@ async function getTxData() {
     nonce,
     pubKey: rsaKey.publicKey,
     keyType: KeyType.RSA,
-    // resetKeys,
+    resetKeys,
   };
 
   const data = new SignMessage(inner);
@@ -35,6 +35,7 @@ async function getTxData() {
   const { key, publicKey } = await getRSAFromPem(rsaKey.privatePem);
   const newKeySign = signMessage(key, messageHash);
   const subject = getSubjectHashData(newKeySign);
+  console.log({ resetKeys });
 
   const emailHeader = await getSignEmailWithDkim(
     subject,
@@ -62,9 +63,9 @@ async function getTxData() {
 
 async function getStartRecoveryTxData() {
   const initData = await getTxData();
-  console.log(initData);
+
   const tx = await startRecoveryTx(initData.tempTxData, initData.k1.publicKey);
   return { tempTxData: initData.tempTxData, k1: initData.k1, tx };
 }
 
-const data = await getStartRecoveryTxData();
+await getStartRecoveryTxData();
