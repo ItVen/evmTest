@@ -9,9 +9,8 @@ import {
   k1PersonalSign,
   getRegisterAdminSin,
   emailHash,
-  saveEmailData,
 } from "../utils/crypto.js";
-import { getFileData } from "../utils/file.js";
+import { getFileData, saveEmailData } from "../utils/file.js";
 import { quickRegisterTx } from "../../evm/rangers.js";
 import * as dotenv from "dotenv";
 dotenv.config("./env");
