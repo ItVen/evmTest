@@ -454,7 +454,7 @@ export function updateRecoveryEmailInput(rawData) {
   const nonce = rawData.nonce;
   const emails = [rawData.emails];
   const threshold = rawData.threshold;
-  const keyType = rawData.key;
+  const keyType = rawData.keyType;
   const sigKey = rawData.key;
   const sig = rawData.sig;
 
