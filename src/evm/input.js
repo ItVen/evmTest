@@ -449,42 +449,14 @@ export function updateQuickLoginInput(rawData) {
 }
 
 export function updateRecoveryEmailInput(rawData) {
-  const registerEmail = getEncodData({
-    v: rawData.email,
-    t: "bytes32",
-  });
-
-  const username = getEncodData({
-    v: rawData.username,
-    t: "bytes32",
-  });
-
-  const nonce = getEncodData({
-    v: rawData.nonce,
-    t: "uint256",
-  });
-
-  const emails = getEncodData({
-    v: rawData.emails,
-    t: "bytes32[]",
-  });
-  const threshold = getEncodData({
-    v: rawData.threshold,
-    t: "uint256",
-  });
-
-  const keyType = getEncodData({
-    v: rawData.key,
-    t: "uint256",
-  });
-  const sigKey = getEncodData({
-    v: rawData.key,
-    t: "bytes",
-  });
-  const sig = getEncodData({
-    v: rawData.sig,
-    t: "bytes",
-  });
+  const registerEmail = rawData.email;
+  const username = rawData.username;
+  const nonce = rawData.nonce;
+  const emails = [rawData.emails];
+  const threshold = rawData.threshold;
+  const keyType = rawData.key;
+  const sigKey = rawData.key;
+  const sig = rawData.sig;
 
   const inputs = [
     registerEmail,
@@ -501,25 +473,13 @@ export function updateRecoveryEmailInput(rawData) {
 }
 
 export function setAdminInput(rawData) {
-  const newAdminKeyType = getEncodData({
-    v: rawData.newAdminKeyType,
-    t: "uint256",
-  });
+  const newAdminKeyType = rawData.newAdminKeyType;
 
-  const newAdminKey = getEncodData({
-    v: rawData.newAdminKey,
-    t: "bytes",
-  });
+  const newAdminKey = rawData.newAdminKey;
 
-  const newadminSig = getEncodData({
-    v: rawData.newadminSig,
-    t: "bytes",
-  });
+  const newadminSig = rawData.newadminSig;
 
-  const oldadminSig = getEncodData({
-    v: rawData.oldadminSig,
-    t: "bytes",
-  });
+  const oldadminSig = rawData.oldadminSig;
 
   const inputs = [newAdminKeyType, newAdminKey, newadminSig, oldadminSig];
 

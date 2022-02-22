@@ -1,64 +1,54 @@
-import {
-  SignMessage,
-  ActionType,
-  KeyType,
-  RpcActionType,
-} from "up-aggregator-utils";
-import {
-  getHashData,
-  k1PersonalSign,
-  getSignEmailWithDkim,
-  emailHash,
-  getSubjectHashData,
-} from "../utils/crypto.js";
+import { SignMessage, ActionType, KeyType } from "up-aggregator-utils";
+import { k1PersonalSign, emailHash } from "../utils/crypto.js";
 import { getFileData } from "../utils/file.js";
-import { registerTx } from "../../evm/rangers.js";
+import { updateRecoveryEmailTx } from "../../evm/rangers.js";
 import * as dotenv from "dotenv";
 dotenv.config("./env");
+const argsUsername = process.argv.splice(2);
+const fileName = argsUsername[0];
+const nonce = argsUsername[1];
+const recoveryEmail = argsUsername[2];
 
-async function getRegisterData(username) {
-  const k1 = getFileData("./mock/ethKey.json", true);
-  const email = k1.publicKey + "@mail.unipass.me";
-  const pubKey = k1.publicKey;
+async function getData() {
+  const account = getFileData(`./mock/${fileName}.json`, true);
+
   const inner = {
     chainId: 0,
-    action: ActionType.REGISTER,
-    username: getHashData(username),
-    registerEmail: emailHash(email),
-    pubKey: pubKey,
+    action: ActionType.UPDATE_RECOVERY_EMAIL,
+    username: account.tempTxData.username,
+    registerEmail: account.tempTxData.email,
+    pubKey: account.k1.publicKey,
     keyType: KeyType.Secp256K1,
+    recoveryEmail: [emailHash(recoveryEmail)],
+    threshold: 1,
+    nonce,
   };
   const data = new SignMessage(inner);
   const messageHash = await data.messageHash();
-  const sig = k1PersonalSign(messageHash, k1.privateKey);
-
-  const subject = getSubjectHashData(sig);
-  const emailHeader = await getSignEmailWithDkim(
-    subject,
-    email,
-    process.env.BOT_MAIL
-  );
-  console.log(emailHeader);
+  const sig = k1PersonalSign(messageHash, account.k1.privateKey);
 
   const tempTxData = {
-    email: emailHash(email),
-    username: getHashData(username),
-    oriUsername: username,
-    oriEmail: email,
-    key: pubKey.toLocaleLowerCase(),
+    email: account.tempTxData.email,
+    username: account.tempTxData.username,
+    oriUsername: account.tempTxData.oriUsername,
+    oriEmail: account.tempTxData.oriEmail,
+    key: account.k1.publicKey,
     keyType: KeyType.Secp256K1,
+    nonce,
+    emails: emailHash(recoveryEmail),
+    threshold: 1,
     sig,
-    type: RpcActionType.REGISTER,
-    emailHeader,
   };
-  return { tempTxData, k1 };
+  return { tempTxData, k1: account.k1 };
 }
 
-async function getRegisterTxData(username) {
-  const initData = await getRegisterData(username);
-  const tx = await registerTx(initData.tempTxData, initData.k1.publicKey);
+async function updateRecoveryEmail() {
+  const initData = await getData();
+  const tx = await updateRecoveryEmailTx(
+    initData.tempTxData,
+    initData.k1.publicKey
+  );
   return { tempTxData: initData.tempTxData, k1: initData.k1, tx };
 }
 
-const data = await getRegisterTxData("web3_register");
-console.log(data);
+await updateRecoveryEmail();
