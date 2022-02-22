@@ -10,9 +10,12 @@ import { startRecoveryTx } from "../../evm/rangers.js";
 import * as dotenv from "dotenv";
 dotenv.config("./env");
 
+const argsUsername = process.argv.splice(2);
+const fileName = argsUsername[0];
+const nonce = argsUsername[1];
+
 async function getTxData() {
-  const nonce = "0x2";
-  const account = getFileData("./mock/account_recovery.json", true);
+  const account = getFileData(`./mock/${fileName}.json`, true);
   const rsaKey = getFileData("./mock/addRSAKey.json", true);
   const inner = {
     chainId: process.env.CHAIN_ID,
@@ -23,10 +26,9 @@ async function getTxData() {
     pubKey: rsaKey.publicKey,
     keyType: KeyType.RSA,
   };
-  console.log(inner);
+
   const data = new SignMessage(inner);
   const messageHash = await data.messageHash();
-  console.log(messageHash);
   const { key, publicKey } = await getRSAFromPem(rsaKey.privatePem);
   const newKeySign = signMessage(key, messageHash);
   const subject = getSubjectHashData(newKeySign);
@@ -37,7 +39,7 @@ async function getTxData() {
     process.env.BOT_MAIL
   );
   saveEmailData("./mock/start_recovery.eml", emailHeader);
-  console.log(emailHeader);
+  const email = getFileData(`./email/${fileName}_start_recovery.eml`);
 
   const tempTxData = {
     email: account.tempTxData.email,
@@ -49,7 +51,7 @@ async function getTxData() {
     newKeySign,
     nonce,
     resetKeys: false,
-    emailHeader,
+    emailHeader: email,
   };
 
   return { tempTxData, k1: account.k1 };
@@ -63,4 +65,3 @@ async function getStartRecoveryTxData() {
 }
 
 const data = await getStartRecoveryTxData();
-console.log(data);
