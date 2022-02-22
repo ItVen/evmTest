@@ -33,7 +33,7 @@ async function getAddLocalKeyTxData() {
   const messageHash = await data.messageHash();
   const sig = k1PersonalSign(messageHash, account.k1.privateKey);
 
-  const { key } = await getRSAFromPem(rsaKey.privatePem);
+  const { key, publicKey } = await getRSAFromPem(rsaKey.privatePem);
 
   const newKeySign = signMessage(key, messageHash);
 
@@ -44,7 +44,7 @@ async function getAddLocalKeyTxData() {
     oriEmail: account.tempTxData.oriEmail,
     nonce,
     newKeyType: KeyType.RSA,
-    newKey: rsaKey.publicKey,
+    newKey: publicKey,
     newKeySign,
     keyType: KeyType.Secp256K1,
     key: account.k1.publicKey,

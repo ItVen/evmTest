@@ -98,7 +98,9 @@ export async function extractPubkey(privateKey) {
   const n = data.n.slice(1);
   const eVec = Buffer.from(e, "hex");
   const nVec = n;
-  const pubKey = "0x" + Buffer.concat([eVec, nVec]).toString("hex");
+  const pubKey = "0x" + Buffer.concat([nVec]).toString("hex");
+
+  // const pubKey = "0x" + Buffer.concat([eVec, nVec]).toString("hex");
   return pubKey;
 }
 

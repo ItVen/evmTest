@@ -33,7 +33,7 @@ async function getTxData() {
   const data = new SignMessage(inner);
   const messageHash = await data.messageHash();
   console.log(messageHash);
-  const { key } = await getRSAFromPem(rsaKey.privatePem);
+  const { key, publicKey } = await getRSAFromPem(rsaKey.privatePem);
   const newKeySign = signMessage(key, messageHash);
   const subject = getSubjectHashData(newKeySign);
 
@@ -49,7 +49,7 @@ async function getTxData() {
     username: account.tempTxData.username,
     oriUsername: account.tempTxData.oriUsername,
     oriEmail: account.tempTxData.oriEmail,
-    newKey: rsaKey.publicKey,
+    newKey: publicKey,
     newKeyType: KeyType.RSA,
     newKeySign,
     nonce,
