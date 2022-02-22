@@ -26,7 +26,7 @@ async function getTxData() {
   const rsaKey = getFileData("./mock/addRSAKey.json", true);
   const inner = {
     chainId: process.env.CHAIN_ID,
-    action: ActionType.QUICK_ADD_LOCAL_KEY,
+    action: ActionType.UPDATE_QUICK_LOGIN,
     username: account.tempTxData.username,
     registerEmail: account.tempTxData.email,
     nonce,
@@ -35,7 +35,7 @@ async function getTxData() {
   };
   const data = new SignMessage(inner);
   const messageHash = await data.messageHash();
-  const { key, publicKey } = await getRSAFromPem(rsaKey.privatePem);
+
   const newKeySign = signMessage(key, messageHash);
 
   const verify = verifyRSASign(messageHash, newKeySign, rsaKey.publicKey);

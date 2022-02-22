@@ -1,65 +1,56 @@
-import {
-  SignMessage,
-  ActionType,
-  KeyType,
-  RpcActionType,
-} from "up-aggregator-utils";
-import {
-  getHashData,
-  k1PersonalSign,
-  getSignEmailWithDkim,
-  emailHash,
-  getSubjectHashData,
-} from "../utils/crypto.js";
+import { SignMessage, ActionType, KeyType } from "up-aggregator-utils";
+import { k1PersonalSign } from "../utils/crypto.js";
 import { getFileData } from "../utils/file.js";
-import { registerTx } from "../../evm/rangers.js";
+import { updateQuickLoginTx } from "../../evm/rangers.js";
 import * as dotenv from "dotenv";
 dotenv.config("./env");
 
-async function getRegisterData(username) {
-  const k1 = getFileData("./mock/ethKey.json", true);
-  const email = k1.publicKey + "@mail.unipass.me";
-  const pubKey = k1.publicKey;
+const argsUsername = process.argv.splice(2);
+const fileName = argsUsername[0];
+const nonce = argsUsername[1];
+let quickLogin = argsUsername[2];
+quickLogin = quickLogin == "true" ? true : false;
+
+async function getData() {
+  const account = getFileData(`./mock/${fileName}.json`, true);
+  console.log(account);
+
   const inner = {
     chainId: 0,
-    action: ActionType.REGISTER,
-    username: getHashData(username),
-    registerEmail: emailHash(email),
-    pubKey: pubKey,
+    action: ActionType.UPDATE_QUICK_LOGIN,
+    username: account.tempTxData.username,
+    registerEmail: account.tempTxData.email,
+    pubKey: account.k1.publicKey,
     keyType: KeyType.Secp256K1,
+    quickLogin,
+    nonce,
   };
   const data = new SignMessage(inner);
   const messageHash = await data.messageHash();
-  const sig = k1PersonalSign(messageHash, k1.privateKey);
-
-  const subject = getSubjectHashData(sig);
-  const emailHeader = await getSignEmailWithDkim(
-    subject,
-    email,
-    process.env.BOT_MAIL
-  );
-  console.log(emailHeader);
-  //0x086eb5e44e06912460f78b0c0806791ea15b4379bc627f335deb101e79d44f15
+  const sig = k1PersonalSign(messageHash, account.k1.privateKey);
 
   const tempTxData = {
-    email: emailHash(email),
-    username: getHashData(username),
-    oriUsername: username,
-    oriEmail: email,
-    key: pubKey.toLocaleLowerCase(),
+    email: account.tempTxData.email,
+    username: account.tempTxData.username,
+    oriUsername: account.tempTxData.oriUsername,
+    oriEmail: account.tempTxData.oriEmail,
+    key: account.k1.publicKey,
     keyType: KeyType.Secp256K1,
+    nonce,
+    quickLogin,
     sig,
-    type: RpcActionType.REGISTER,
-    emailHeader,
   };
-  return { tempTxData, k1 };
+  return { tempTxData, k1: account.k1 };
 }
 
-async function getRegisterTxData(username) {
-  const initData = await getRegisterData(username);
-  const tx = await registerTx(initData.tempTxData, initData.k1.publicKey);
+async function updateQuickLogin() {
+  const initData = await getData();
+  const tx = await updateQuickLoginTx(
+    initData.tempTxData,
+    initData.k1.publicKey
+  );
   return { tempTxData: initData.tempTxData, k1: initData.k1, tx };
 }
 
-const data = await getRegisterTxData("web3_register");
+const data = await updateQuickLogin();
 console.log(data);
