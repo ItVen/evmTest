@@ -39,6 +39,7 @@ async function getRegisterData(username) {
     process.env.BOT_MAIL
   );
   console.log(emailHeader);
+  //0x086eb5e44e06912460f78b0c0806791ea15b4379bc627f335deb101e79d44f15
 
   const tempTxData = {
     email: emailHash(email),

@@ -31,6 +31,7 @@ async function getQuickRegisterTxData() {
   const tx = await notionQuickRegisterTx(initData, k1.publicKey);
   return { tempTxData: initData.tempTxData, k1: k1, tx };
 }
+const
 
 const data = await getQuickRegisterTxData();
 console.log(data);
