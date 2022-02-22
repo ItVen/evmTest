@@ -74,3 +74,5 @@ async function getQuickAddLocalKeyTxData() {
 
 const data = await getQuickAddLocalKeyTxData();
 console.log(data);
+// const { key, publicKey } = await getRSAFromPem(process.env.UNIPASS_PEM);
+// console.log({ key, publicKey });
