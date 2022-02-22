@@ -220,3 +220,16 @@ export async function setAdminTx(rawData, from) {
     console.log({ err });
   }
 }
+
+export async function getUsersTx(username, from) {
+  try {
+    console.log({ username, from: myAddress.publicKey });
+    const txData = await contract.methods
+      .users(username)
+      .send({ from: myAddress.publicKey });
+    console.log({ txData });
+    return txData;
+  } catch (err) {
+    console.log({ err });
+  }
+}

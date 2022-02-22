@@ -16,6 +16,7 @@
     "complete_recovery": "node ./src/unipass/tx/completeRecovery.js",
     "update_quick_login": "node ./src/unipass/tx/updateQuickLogin.js",
     "update_recovery_email": "node ./src/unipass/tx/updateRecoveryEmail.js",
+    "users": "node ./src/unipass/tx/users.js",
     "notion_r": "node ./src/unipass/tx/notionR.js",
     "notion_QA": "node ./src/unipass/tx/notionQAK.js",
     "k1": "node ./src/unipass/utils/k1.js",
