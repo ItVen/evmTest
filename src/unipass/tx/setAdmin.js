@@ -29,11 +29,7 @@ async function getData() {
       Buffer.from(messageHash.replace("0x", ""), "hex"),
       "hex"
     );
-  const verify = verifyRSASign(
-    messageHash,
-    newAdminSig,
-    newAdminData.publicKey
-  );
+  let verify = verifyRSASign(messageHash, newAdminSig, newAdminData.publicKey);
   console.log({
     verify,
     src: messageHash,
@@ -46,7 +42,7 @@ async function getData() {
       Buffer.from(messageHash.replace("0x", ""), "hex"),
       "hex"
     );
-  const verify = verifyRSASign(messageHash, oldAdminSig, adminData.publicKey);
+  verify = verifyRSASign(messageHash, oldAdminSig, adminData.publicKey);
   console.log({
     verify,
     src: messageHash,
