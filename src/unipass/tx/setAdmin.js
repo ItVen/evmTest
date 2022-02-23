@@ -14,11 +14,11 @@ async function getData() {
   const adminKey = getFileData("./mock/adminkey.json", true);
   const adminData = await getRSAFromPem(adminKey.privatePem, true);
   const newAdminData = await getRSAFromPem(newRSA.privatePem, true);
-
+  const publicKey = await extractPubkey(newAdminData.key);
   const inner = {
     chainId: 0,
     action: ActionType.newAdminKeyType,
-    pubKey: newAdminData.publicKey,
+    pubKey: publicKey,
     keyType: KeyType.RSA,
   };
   const data = new SignMessage(inner);
@@ -49,7 +49,6 @@ async function getData() {
     signature: oldAdminSig,
     pubkey: adminData.publicKey,
   });
-  const publicKey = await extractPubkey(newAdminData.key);
 
   const tempTxData = {
     newAdminSig,
