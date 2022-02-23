@@ -1,88 +1,17 @@
-import pkg from "web3-utils";
-const { encodePacked } = pkg;
 import { saveEmailData } from "../unipass/utils/file.js";
-
-function getEncodData(key) {
-  return key.v;
-}
-export function notionQuickRegisterInput(rawData) {
-  const registerEmail = getEncodData({
-    v: rawData.registerEmail,
-    t: "bytes32",
-  });
-
-  const originUsername = getEncodData({
-    v: rawData.originUsername,
-    t: "string",
-  });
-
-  const keyType = getEncodData({
-    v: rawData.newKeyType,
-    t: "uint8",
-  });
-
-  const key = getEncodData({
-    v: rawData.newKey,
-    t: "bytes",
-  });
-
-  const sig = getEncodData({
-    v: rawData.newKeySig,
-    t: "bytes",
-  });
-
-  const adminSig = getEncodData({
-    v: rawData.adminSig,
-    t: "bytes",
-  });
-
-  const source = getEncodData({
-    v: rawData.source,
-    t: "string",
-  });
-
-  const inputs = [
-    registerEmail,
-    originUsername,
-    keyType,
-    key,
-    sig,
-    adminSig,
-    source,
-  ];
-
-  return inputs;
-}
 
 export function quickRegisterInput(rawData) {
   const registerEmail = rawData.email;
 
   const originUsername = rawData.oriUsername;
 
-  const keyType = getEncodData({
-    v: rawData.keyType,
-    t: "uint8",
-  });
+  const keyType = rawData.keyType;
+  const key = rawData.key;
 
-  const key = getEncodData({
-    v: rawData.key,
-    t: "bytes",
-  });
+  const sig = rawData.sig;
+  const adminSig = rawData.adminSignature;
 
-  const sig = getEncodData({
-    v: rawData.sig,
-    t: "bytes",
-  });
-
-  const adminSig = getEncodData({
-    v: rawData.adminSignature,
-    t: "bytes",
-  });
-
-  const source = getEncodData({
-    v: "unipass-wallet",
-    t: "string",
-  });
+  const source = "unipass-wallet";
 
   const inputs = [
     registerEmail,
@@ -98,38 +27,20 @@ export function quickRegisterInput(rawData) {
 }
 
 export function registerInput(rawData) {
-  const registerEmail = getEncodData({
-    v: rawData.email,
-    t: "bytes32",
-  });
+  const registerEmail = rawData.email;
 
-  const originUsername = getEncodData({
-    v: rawData.oriUsername,
-    t: "string",
-  });
+  const originUsername = rawData.oriUsername;
 
   const emailHeader =
     "0x" + Buffer.from(rawData.emailHeader.trim(), "utf-8").toString("hex");
 
-  const keyType = getEncodData({
-    v: rawData.keyType,
-    t: "uint256",
-  });
+  const keyType = rawData.keyType;
 
-  const key = getEncodData({
-    v: rawData.key,
-    t: "bytes",
-  });
+  const key = rawData.key;
 
-  const sig = getEncodData({
-    v: rawData.sig,
-    t: "bytes",
-  });
+  const sig = rawData.sig;
 
-  const source = getEncodData({
-    v: "unipass-wallet",
-    t: "string",
-  });
+  const source = "unipass-wallet";
 
   const inputs = [
     registerEmail,
@@ -145,38 +56,16 @@ export function registerInput(rawData) {
 }
 
 export function quickAddLocalKeyInput(rawData) {
-  const registerEmail = getEncodData({
-    v: rawData.email,
-    t: "bytes32",
-  });
-  const originUsername = getEncodData({
-    v: rawData.username,
-    t: "bytes32",
-  });
-  const nonce = getEncodData({
-    v: rawData.nonce,
-    t: "uint256",
-  });
-  const keyType = getEncodData({
-    v: rawData.newKeyType,
-    t: "uint256",
-  });
-  const key = getEncodData({
-    v: rawData.newKey,
-    t: "bytes",
-  });
-  const sig = getEncodData({
-    v: rawData.newKeySign,
-    t: "bytes",
-  });
-  const adminSig = getEncodData({
-    v: rawData.adminSignature,
-    t: "bytes",
-  });
-  const emailHeader = getEncodData({
-    v: ["0x" + Buffer.from(rawData.emailHeader, "utf-8").toString("hex")],
-    t: "bytes",
-  });
+  const registerEmail = rawData.email;
+  const originUsername = rawData.username;
+  const nonce = rawData.nonce;
+  const keyType = rawData.newKeyType;
+  const key = rawData.newKey;
+  const sig = rawData.newKeySign;
+  const adminSig = rawData.adminSignature;
+  const emailHeader = [
+    "0x" + Buffer.from(rawData.emailHeader, "utf-8").toString("hex"),
+  ];
   console.log(emailHeader);
 
   const inputs = [
@@ -195,43 +84,16 @@ export function quickAddLocalKeyInput(rawData) {
 }
 
 export function addLocalKeyInput(rawData) {
-  const registerEmail = getEncodData({
-    v: rawData.email,
-    t: "bytes32",
-  });
-  const originUsername = getEncodData({
-    v: rawData.username,
-    t: "bytes32",
-  });
-  const nonce = getEncodData({
-    v: rawData.nonce,
-    t: "uint256",
-  });
-  const newKeyType = getEncodData({
-    v: rawData.newKeyType,
-    t: "uint256",
-  });
-  const newKey = getEncodData({
-    v: rawData.newKey,
-    t: "bytes",
-  });
-  const newKeySign = getEncodData({
-    v: rawData.newKeySign,
-    t: "bytes",
-  });
-  const keyType = getEncodData({
-    v: rawData.keyType,
-    t: "uint256",
-  });
-  const key = getEncodData({
-    v: rawData.key,
-    t: "bytes",
-  });
+  const registerEmail = rawData.email;
+  const originUsername = rawData.username;
+  const nonce = rawData.nonce;
+  const newKeyType = rawData.newKeyType;
+  const newKey = rawData.newKey;
+  const newKeySign = rawData.newKeySign;
+  const keyType = rawData.keyType;
+  const key = rawData.key;
 
-  const sig = getEncodData({
-    v: rawData.sig,
-    t: "bytes",
-  });
+  const sig = rawData.sig;
 
   const inputs = [
     registerEmail,
@@ -249,44 +111,22 @@ export function addLocalKeyInput(rawData) {
 }
 
 export function startRecoveryInput(rawData) {
-  const registerEmail = getEncodData({
-    v: rawData.email,
-    t: "bytes32",
-  });
+  const registerEmail = rawData.email;
 
-  const username = getEncodData({
-    v: rawData.username,
-    t: "bytes32",
-  });
+  const username = rawData.username;
 
-  const nonce = getEncodData({
-    v: rawData.nonce,
-    t: "uint256",
-  });
+  const nonce = rawData.nonce;
 
-  const resetKeys = getEncodData({
-    v: rawData.resetKeys,
-    t: "bool",
-  });
+  const resetKeys = rawData.resetKeys;
 
-  const keyType = getEncodData({
-    v: rawData.newKeyType,
-    t: "uint256",
-  });
+  const keyType = rawData.newKeyType;
 
-  const key = getEncodData({
-    v: rawData.newKey,
-    t: "bytes",
-  });
-  const sig = getEncodData({
-    v: rawData.newKeySign,
-    t: "bytes",
-  });
+  const key = rawData.newKey;
+  const sig = rawData.newKeySign;
 
-  const emailHeaders = getEncodData({
-    v: ["0x" + Buffer.from(rawData.emailHeader, "utf-8").toString("hex")],
-    t: "bytes[]",
-  });
+  const emailHeaders = [
+    "0x" + Buffer.from(rawData.emailHeader, "utf-8").toString("hex"),
+  ];
 
   const inputs = [
     registerEmail,
@@ -303,35 +143,17 @@ export function startRecoveryInput(rawData) {
 }
 
 export function cancelRecoveryInput(rawData) {
-  const registerEmail = getEncodData({
-    v: rawData.email,
-    t: "bytes32",
-  });
+  const registerEmail = rawData.email;
 
-  const username = getEncodData({
-    v: rawData.username,
-    t: "bytes32",
-  });
+  const username = rawData.username;
 
-  const nonce = getEncodData({
-    v: rawData.nonce,
-    t: "uint256",
-  });
+  const nonce = rawData.nonce;
 
-  const sigKeyType = getEncodData({
-    v: rawData.keyType,
-    t: "uint256",
-  });
+  const sigKeyType = rawData.keyType;
 
-  const sigKey = getEncodData({
-    v: rawData.key,
-    t: "bytes",
-  });
+  const sigKey = rawData.key;
 
-  const sig = getEncodData({
-    v: rawData.sig,
-    t: "bytes",
-  });
+  const sig = rawData.sig;
 
   const inputs = [registerEmail, username, nonce, sigKeyType, sigKey, sig];
 
@@ -346,43 +168,14 @@ export function completeRecoveryInput(rawData) {
 }
 
 export function delLocalKeyInput(rawData) {
-  const registerEmail = getEncodData({
-    v: rawData.email,
-    t: "bytes32",
-  });
-
-  const username = getEncodData({
-    v: rawData.username,
-    t: "bytes32",
-  });
-
-  const nonce = getEncodData({
-    v: rawData.nonce,
-    t: "uint256",
-  });
-
-  const delKeyType = getEncodData({
-    v: rawData.delKeyType,
-    t: "uint256",
-  });
-
-  const delKey = getEncodData({
-    v: rawData.delKey,
-    t: "bytes",
-  });
-  const sigKeyType = getEncodData({
-    v: rawData.keyType,
-    t: "uint256",
-  });
-
-  const sigKey = getEncodData({
-    v: rawData.key,
-    t: "bytes",
-  });
-  const sig = getEncodData({
-    v: rawData.sig,
-    t: "bytes",
-  });
+  const registerEmail = rawData.email;
+  const username = rawData.username;
+  const nonce = rawData.nonce;
+  const delKeyType = rawData.delKeyType;
+  const delKey = rawData.delKey;
+  const sigKeyType = rawData.keyType;
+  const sigKey = rawData.key;
+  const sig = rawData.sig;
 
   const inputs = [
     registerEmail,
@@ -399,38 +192,17 @@ export function delLocalKeyInput(rawData) {
 }
 
 export function updateQuickLoginInput(rawData) {
-  const registerEmail = getEncodData({
-    v: rawData.email,
-    t: "bytes32",
-  });
+  const registerEmail = rawData.email;
 
-  const username = getEncodData({
-    v: rawData.username,
-    t: "bytes32",
-  });
+  const username = rawData.username;
 
-  const nonce = getEncodData({
-    v: rawData.nonce,
-    t: "uint256",
-  });
+  const nonce = rawData.nonce;
 
-  const quickLogin = getEncodData({
-    v: rawData.quickLogin,
-    t: "bool",
-  });
-  const sigKeyType = getEncodData({
-    v: rawData.keyType,
-    t: "uint256",
-  });
+  const quickLogin = rawData.quickLogin;
+  const sigKeyType = rawData.keyType;
 
-  const sigKey = getEncodData({
-    v: rawData.key,
-    t: "bytes",
-  });
-  const sig = getEncodData({
-    v: rawData.sig,
-    t: "bytes",
-  });
+  const sigKey = rawData.key;
+  const sig = rawData.sig;
 
   const inputs = [
     registerEmail,
