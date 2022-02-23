@@ -1,5 +1,9 @@
 import { SignMessage, ActionType, KeyType } from "up-aggregator-utils";
-import { getRSAFromPem, extractPubkey } from "../utils/crypto.js";
+import {
+  getRSAFromPem,
+  extractPubkey,
+  verifyRSASign,
+} from "../utils/crypto.js";
 import { getFileData } from "../utils/file.js";
 import { setAdminTx } from "../../evm/rangers.js";
 import * as dotenv from "dotenv";
