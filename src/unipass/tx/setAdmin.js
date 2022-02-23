@@ -25,12 +25,30 @@ async function getData() {
       Buffer.from(messageHash.replace("0x", ""), "hex"),
       "hex"
     );
+  const verify = verifyRSASign(
+    messageHash,
+    newAdminSig,
+    newAdminData.publicKey
+  );
+  console.log({
+    verify,
+    src: messageHash,
+    signature: newAdminSig,
+    pubkey: newAdminData.publicKey,
+  });
   const oldAdminSig =
     "0x" +
     adminData.key.sign(
       Buffer.from(messageHash.replace("0x", ""), "hex"),
       "hex"
     );
+  const verify = verifyRSASign(messageHash, oldAdminSig, adminData.publicKey);
+  console.log({
+    verify,
+    src: messageHash,
+    signature: oldAdminSig,
+    pubkey: adminData.publicKey,
+  });
   const publicKey = await extractPubkey(newAdminData.key);
 
   const tempTxData = {
