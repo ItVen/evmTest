@@ -211,7 +211,7 @@ export async function updateRecoveryEmailTx(rawData, from) {
 export async function setAdminTx(rawData, from) {
   const inputs = setAdminInput(rawData);
   try {
-    console.log({ inputs, from });
+    console.log({ inputs, from: myAddress.publicKey });
     const txData = await contract.methods
       .setAdmin(...inputs)
       .send({ from: myAddress.publicKey });

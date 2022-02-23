@@ -16,12 +16,14 @@
     "complete_recovery": "node ./src/unipass/tx/completeRecovery.js",
     "update_quick_login": "node ./src/unipass/tx/updateQuickLogin.js",
     "update_recovery_email": "node ./src/unipass/tx/updateRecoveryEmail.js",
+    "set_admin": "node ./src/unipass/tx/setAdmin.js",
     "users": "node ./src/unipass/tx/users.js",
     "notion_r": "node ./src/unipass/tx/notionR.js",
     "notion_QA": "node ./src/unipass/tx/notionQAK.js",
     "k1": "node ./src/unipass/utils/k1.js",
     "rsa": "node ./src/unipass/utils/rsa.js",
     "discord": "node ./src/discord",
+    "sdk": "git clone --depth=1 git@github.com:lay2dev/up-aggregator-utils.git && rm -rf node_modules/up-aggregator-utils && cp -rf up-aggregator-utils node_modules/up-aggregator-utils && cd node_modules/up-aggregator-utils && yarn && yarn build && rm -rf ../../up-aggregator-utils",
     "dkim": "git clone --depth=1 git@github.com:sking789/node-dkim.git && rm -rf node_modules/node-dkim && cp -rf node-dkim node_modules/node-dkim && cd node_modules/node-dkim && yarn&& rm -rf ../../node-dkim"
   },
   "dependencies": {

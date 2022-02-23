@@ -1,64 +1,52 @@
-import {
-  SignMessage,
-  ActionType,
-  KeyType,
-  RpcActionType,
-} from "up-aggregator-utils";
-import {
-  getHashData,
-  k1PersonalSign,
-  getSignEmailWithDkim,
-  emailHash,
-  getSubjectHashData,
-} from "../utils/crypto.js";
+import { SignMessage, ActionType, KeyType } from "up-aggregator-utils";
+import { getRSAFromPem, extractPubkey } from "../utils/crypto.js";
 import { getFileData } from "../utils/file.js";
-import { registerTx } from "../../evm/rangers.js";
+import { setAdminTx } from "../../evm/rangers.js";
 import * as dotenv from "dotenv";
 dotenv.config("./env");
 
-async function getRegisterData(username) {
-  const k1 = getFileData("./mock/ethKey.json", true);
-  const email = k1.publicKey + "@mail.unipass.me";
-  const pubKey = k1.publicKey;
+async function getData() {
+  const newRSA = getFileData("./mock/admin-rsa.json", true);
+  const adminKey = getFileData("./mock/adminkey.json", true);
+  const adminData = await getRSAFromPem(adminKey.privatePem, true);
+  const newAdminData = await getRSAFromPem(newRSA.privatePem, true);
+
   const inner = {
     chainId: 0,
-    action: ActionType.REGISTER,
-    username: getHashData(username),
-    registerEmail: emailHash(email),
-    pubKey: pubKey,
-    keyType: KeyType.Secp256K1,
+    action: ActionType.newAdminKeyType,
+    pubKey: newAdminData.publicKey,
+    keyType: KeyType.RSA,
   };
   const data = new SignMessage(inner);
   const messageHash = await data.messageHash();
-  const sig = k1PersonalSign(messageHash, k1.privateKey);
-
-  const subject = getSubjectHashData(sig);
-  const emailHeader = await getSignEmailWithDkim(
-    subject,
-    email,
-    process.env.BOT_MAIL
-  );
-  console.log(emailHeader);
+  const newAdminSig =
+    "0x" +
+    newAdminData.key.sign(
+      Buffer.from(messageHash.replace("0x", ""), "hex"),
+      "hex"
+    );
+  const oldAdminSig =
+    "0x" +
+    adminData.key.sign(
+      Buffer.from(messageHash.replace("0x", ""), "hex"),
+      "hex"
+    );
+  const publicKey = await extractPubkey(newAdminData.key);
 
   const tempTxData = {
-    email: emailHash(email),
-    username: getHashData(username),
-    oriUsername: username,
-    oriEmail: email,
-    key: pubKey.toLocaleLowerCase(),
-    keyType: KeyType.Secp256K1,
-    sig,
-    type: RpcActionType.REGISTER,
-    emailHeader,
+    newAdminSig,
+    oldAdminSig,
+    publicKey,
+    newAdminKeyType: KeyType.RSA,
   };
-  return { tempTxData, k1 };
+  return { tempTxData };
 }
 
-async function getRegisterTxData(username) {
-  const initData = await getRegisterData(username);
-  const tx = await registerTx(initData.tempTxData, initData.k1.publicKey);
-  return { tempTxData: initData.tempTxData, k1: initData.k1, tx };
+async function setAdmin() {
+  const initData = await getData();
+  console.log(initData);
+  const tx = await setAdminTx(initData.tempTxData);
+  return { tempTxData: initData.tempTxData, tx };
 }
 
-const data = await getRegisterTxData("web3_register");
-console.log(data);
+setAdmin();

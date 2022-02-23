@@ -472,13 +472,13 @@ export function updateRecoveryEmailInput(rawData) {
 export function setAdminInput(rawData) {
   const newAdminKeyType = rawData.newAdminKeyType;
 
-  const newAdminKey = rawData.newAdminKey;
+  const newAdminKey = rawData.publicKey;
 
-  const newadminSig = rawData.newadminSig;
+  const newAdminSig = rawData.newAdminSig;
 
-  const oldadminSig = rawData.oldadminSig;
+  const oldAdminSig = rawData.oldAdminSig;
 
-  const inputs = [newAdminKeyType, newAdminKey, newadminSig, oldadminSig];
+  const inputs = [newAdminKeyType, newAdminKey, newAdminSig, oldAdminSig];
 
   return inputs;
 }
